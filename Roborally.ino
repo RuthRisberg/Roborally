@@ -12,10 +12,14 @@ void setup() {
 
   motors.init();
 
-  delay(2000);
+  delay(1000);
   motors.move(1, 0);
-  delay(2000);
+  delay(1000);
   motors.move(-1, 0);
+  delay(1000);
+  motors.move(0, 1);
+  delay(1000);
+  motors.move(0, -1);
 }
 
 void loop() {

@@ -26,11 +26,11 @@
 Motors::Motors(){
 }
 
-TMC2130Stepper Motors::driver(int number){
-  return(TMC2130Stepper(pins[number][0], pins[number][1], pins[number][2], pins[number][3]));
+TMC2130Stepper Motors::driver(uint16_t* motorpins){
+  return(TMC2130Stepper(motorpins[0], motorpins[1], motorpins[2], motorpins[3]));
 }
-AccelStepper Motors::stepper(int number){
-  return(AccelStepper(steppers[number].DRIVER, pins[number][2], pins[number][1]));
+AccelStepper Motors::stepper(uint16_t* motorpins){
+  return(AccelStepper(AccelStepper::DRIVER, motorpins[2], motorpins[1]));
 }
 
 void Motors::init(){
