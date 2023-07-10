@@ -17,9 +17,9 @@ class Motors{
     void move(float d1, float d2);
     
     // no this is not how things should be, but it has to be like this now becuse TMC2130Stepper won't accept declaration without initialization
-    uint16_t pins[6][4] = { { 2,  5,  4,  3},
-                            { 6,  9,  8,  7},
-                            {46, 49, 48, 47},
+    uint16_t pins[6][4] = { { 2,  5,  4,  3}, // first movement motor
+                            { 6,  9,  8,  7}, // second movement motor
+                            {46, 49, 48, 47}, // spin motor
                             {22, 25, 24, 23},
                             {36, 39, 38, 37},
                             {40, 43, 42, 41}};

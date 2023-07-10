@@ -10,15 +10,6 @@
 #define BLUE_PIN 12
 #define YELLOW_PIN 13
 
-//#define GB_STALL_VALUE 23 //higher stall value setting -> higher stallvalue output
-//#define RO_STALL_VALUE 22
-//#define CLAW_STALL_VALUE 18
-#define GB_STOP_OUT 650  //higher value -> stop sooner
-#define RO_STOP_OUT 650  //lower value -> stop later
-#define GB_STOP_IN 470
-#define RO_STOP_IN 500
-#define CLAW_STOP_VALUE 800
-
 #define MOVE_HOME_SPEED 1200
 #define MOVE_NORMAL_SPEED 2000
 
@@ -53,6 +44,8 @@ void Motors::init(){
     drivers[i].sg_stall_value(stall_values[i]);
     steppers[i].setEnablePin(pins[i][0]);
     steppers[i].setPinsInverted(false, false, true);
+    steppers[i].setMaxSpeed((float)MOVE_NORMAL_SPEED);
+    steppers[i].setAcceleration((float)8000);
   }
   Serial.println("Motors initialized");
 }
@@ -113,18 +106,13 @@ void Motors::homeMotor(int motor, bool dir){                   //dir=0 -> home o
 void Motors::move(float d1, float d2){
   float distance[2] = {d1,d2};
   
-  for(int i=0; i<2; i++){ //runs twice, for i=2 and i=5
+  for(int i=0; i<2; i++){
     steppers[i].enableOutputs();
-  
-    steppers[i].setMaxSpeed((float)MOVE_NORMAL_SPEED);
-  
-    steppers[i].setAcceleration((float)8000);
-  
     steppers[i].move((float)1600 * distance[i]);
   }
   
   move_steppers(0);
-
-  for(int i=0; i<2; i++) if(distance[i]<0) steppers[i].disableOutputs();
+  
+  for(int i=0; i<2; i++) if(distance[i] != 0) steppers[i].disableOutputs();
 }
 
