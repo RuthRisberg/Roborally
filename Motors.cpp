@@ -127,28 +127,10 @@ void Motors::homeMotor(int motor, bool dir){                   //dir=0 -> home o
   Serial.println("Motors homed");
 }
 
-void Motors::rotations(int R, int O, int G, int B){
-  int motor[4] = {0, 1, 3, 4};
-  int rotations[4] = {R, O, G, B};
-  for(int i=0; i<4; i++){
-    steppers[motor[i]].enableOutputs();
+void Motors::move(float d1, float d2){
+  float distance[2] = {d1,d2};
   
-    steppers[motor[i]].setMaxSpeed((float)1000);
-    
-    steppers[motor[i]].setAcceleration((float)10000);
-    
-    steppers[motor[i]].move((float)800 * rotations[i]);
-  }
-  move_steppers(0);
-  for(int i=0; i<4; i++){
-    steppers[motor[i]].disableOutputs();
-  }
-}
-
-void Motors::moves(float RO, float GB){
-  float distance[6] = {0, 0, RO, 0, 0, GB};
-  
-  for(int i=2; i<6; i+=3){ //runs twice, for i=2 and i=5
+  for(int i=0; i<2; i++){ //runs twice, for i=2 and i=5
     steppers[i].enableOutputs();
   
     steppers[i].setMaxSpeed((float)MOVE_NORMAL_SPEED);
@@ -160,6 +142,6 @@ void Motors::moves(float RO, float GB){
   
   move_steppers(0);
 
-  for(int i=2; i<6; i+=3) if(distance[i]<0) steppers[i].disableOutputs();
+  for(int i=0; i<2; i++) if(distance[i]<0) steppers[i].disableOutputs();
 }
 

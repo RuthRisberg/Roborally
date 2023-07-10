@@ -19,9 +19,9 @@ void setup() {
   motors.init();
 
   delay(2000);
-  motors.rotations(1, 0, 0, 0);
+  motors.move(1, 0);
   delay(2000);
-  motors.rotations(-1, 0, 0, 0);
+  motors.move(-1, 0);
 }
 
 void loop() {
