@@ -16,10 +16,6 @@ class Motors{
     void homeMotor(int motor, bool dir);
     void rotations(int R, int O, int G, int B);
     void moves(float RO, float GB);
-    void edit_stallvalue(int motor, int increase);
-    void edit_microstep(int motor, int increase);
-    void edit_current(int motor, int increase);
-    void edit_testSpeed(int motor, int increase);
     
     // no this is not how things should be, but it has to be like this now becuse TMC2130Stepper won't accept declaration without initialization
     uint16_t pins[6][4] = { { 2,  5,  4,  3},

@@ -74,27 +74,6 @@ void Motors::init(){
   Serial.println("Motors initialized");
 }
 
-void Motors::edit_stallvalue(int motor, int increase) {
-  stall_values[motor] += increase;
-  drivers[motor].sg_stall_value(stall_values[motor]);
-}
-
-void Motors::edit_microstep(int motor, int increase) {
-  microstep[motor] += increase;
-  drivers[motor].microsteps(microstep[motor]);
-}
-
-void Motors::edit_current(int motor, int increase) {
-  current[motor] += increase;
-  drivers[motor].setCurrent(current[motor], 0.11, 0.5);
-  //drivers[motor].rms_current(current[motor]);
-}
-
-void Motors::edit_testSpeed(int motor, int increase) {
-  testSpeed[motor] += increase;
-  steppers[motor].setSpeed(testSpeed[motor]);
-}
-
 void Motors::move_steppers(int stats) {
   Serial.println("Steppers moving");
   int gb = 0;
