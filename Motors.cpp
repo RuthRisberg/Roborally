@@ -48,9 +48,13 @@ void Motors::init(){
     steppers[i].setAcceleration((float)8000);
   }
   Serial.println("Motors initialized");
+
+  pinMode(xbutton, INPUT_PULLUP);
+  pinMode(ybutton, INPUT_PULLUP);
+  Serial.println("Buttons initialized");
 }
 
-void Motors::move_steppers(int stats) {
+void Motors::move_steppers() {
   Serial.println("Steppers moving");
   int gb = 0;
   int ro = 0;
@@ -83,24 +87,58 @@ void Motors::disable_outputs(){
   Serial.println("Outputs disabled");
 }
 
-void Motors::homeMotor(int motor, bool dir){                   //dir=0 -> home out, dir=1 -> home in
-  if(motor==2||motor==5){
-    steppers[motor].enableOutputs();
-    steppers[motor].setMaxSpeed((float)MOVE_HOME_SPEED);
-    steppers[motor].setAcceleration((float)8000);
-    if(dir==0){
-      steppers[motor].move((float)-10000);
-    }
-    else if(dir==1){
-      steppers[motor].move((float)10000);
-    }
-    move_steppers(1);
-    steppers[motor].setCurrentPosition((long)0);
+bool Motors::home(){                   //dir=0 -> home out, dir=1 -> home in
+  // setup
+  for (int i=0; i<2; i++) {
+    steppers[i].enableOutputs();
+    steppers[i].setMaxSpeed((float)MOVE_HOME_SPEED);
   }
-  else{
-    Serial.println("Only RO and GB motors are homeable");
+
+  Serial.println("homing setup done");
+
+  // x
+  steppers[0].move(-30000);
+  steppers[1].move(-30000);
+  while (digitalRead(xbutton) == 0) {
+    steppers[0].run();
+    steppers[1].run();
+
+    if (steppers[0].distanceToGo() == 0 and steppers[1].distanceToGo() == 0) {
+      steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED);
+      steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
+      disable_outputs();
+      return (false);
+    }
   }
+
+  Serial.println("homing x done");
+
+  // y
+  steppers[0].move(-30000);
+  steppers[1].move(30000);
+  while (digitalRead(ybutton) == 0) {
+    steppers[0].run();
+    steppers[1].run();
+
+    if (steppers[0].distanceToGo() == 0 and steppers[1].distanceToGo() == 0) {
+      steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED);
+      steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
+      disable_outputs();
+      return (false);
+    }
+  }
+
+  Serial.println("homing y done");
+
+  // teardown
+  steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED);
+  steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
+  steppers[0].setCurrentPosition((long)0);
+  steppers[1].setCurrentPosition((long)0);
+  disable_outputs();
+
   Serial.println("Motors homed");
+  return (true);
 }
 
 void Motors::move(float d1, float d2){
@@ -111,8 +149,8 @@ void Motors::move(float d1, float d2){
     steppers[i].move((float)1600 * distance[i]);
   }
   
-  move_steppers(0);
-  
+  move_steppers();
+
   for(int i=0; i<2; i++) if(distance[i] != 0) steppers[i].disableOutputs();
 }
 

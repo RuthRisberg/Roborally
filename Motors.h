@@ -11,12 +11,13 @@ class Motors{
   public:
     Motors();
     void init();
-    void move_steppers(int stats);
+    void move_steppers();
     void disable_outputs();
-    void homeMotor(int motor, bool dir);
+    bool home();
     void move(float d1, float d2);
     
-    // no this is not how things should be, but it has to be like this now becuse TMC2130Stepper won't accept declaration without initialization
+    uint32_t xbutton = 11;
+    uint32_t ybutton = 10;
     uint16_t pins[6][4] = { { 2,  5,  4,  3}, // first movement motor
                             { 6,  9,  8,  7}, // second movement motor
                             {46, 49, 48, 47}, // spin motor
