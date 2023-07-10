@@ -16,9 +16,6 @@ class Motors{
     void homeMotor(int motor, bool dir);
     void rotations(int R, int O, int G, int B);
     void moves(float RO, float GB);
-    void ROturns(int R, int O, int RO, int wait);
-    void GBturns(int G, int B, int GB, int wait);
-    void turn_series(int turns[][2], int len);
     void edit_stallvalue(int motor, int increase);
     void edit_microstep(int motor, int increase);
     void edit_current(int motor, int increase);
