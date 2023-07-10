@@ -23,14 +23,14 @@ class Motors{
                             {22, 25, 24, 23},
                             {36, 39, 38, 37},
                             {40, 43, 42, 41}};
-    int stall_values[6] = {21, 21, 21, 21, 21, 21};
-    int microstep[6] = {16, 16, 16, 16, 16, 16};
-    int current[6] = {1200, 1200, 1200, 1200, 1200, 1200};
-    int testSpeed[6] = {1000, 1000, 1000, 1000, 1000, 1000};
+    int stall_values[3] = {21, 21, 21};
+    int microstep[3] = {16, 16, 16};
+    int current[3] = {1200, 1200, 1200};
+    int testSpeed[3] = {1000, 1000, 1000};
     TMC2130Stepper driver(uint16_t* motorpins);
     AccelStepper stepper(uint16_t* motorpins);
-    TMC2130Stepper drivers[6] = {driver(pins[0]), driver(pins[1]), driver(pins[2]), driver(pins[3]), driver(pins[4]), driver(pins[5])};
-    AccelStepper steppers[6]  = {stepper(pins[0]), stepper(pins[1]), stepper(pins[2]), stepper(pins[3]), stepper(pins[4]), stepper(pins[5])};
+    TMC2130Stepper drivers[3] = {driver(pins[0]), driver(pins[1]), driver(pins[2])};
+    AccelStepper steppers[3]  = {stepper(pins[0]), stepper(pins[1]), stepper(pins[2])};
     
     
   private:

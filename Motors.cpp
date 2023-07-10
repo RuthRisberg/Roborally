@@ -34,7 +34,7 @@ AccelStepper Motors::stepper(uint16_t* motorpins){
 }
 
 void Motors::init(){
-  for(int i=0; i<6; i++){
+  for(int i=0; i<3; i++){
     pinMode(pins[i][0], OUTPUT);
     digitalWrite(pins[i][0], HIGH);
     drivers[i].begin();             // Initiate pins and registeries
@@ -51,16 +51,6 @@ void Motors::init(){
     drivers[i].semax(2);
     drivers[i].sedn(0b01);
     drivers[i].sg_stall_value(stall_values[i]);
-    /*if(i==2){
-      drivers[i].sg_stall_value(RO_STALL_VALUE);
-    }
-    else if(i==5){
-      drivers[i].sg_stall_value(GB_STALL_VALUE);
-    }
-    else{
-      drivers[i].sg_stall_value(CLAW_STALL_VALUE);
-    }*/
-
     steppers[i].setEnablePin(pins[i][0]);
     steppers[i].setPinsInverted(false, false, true);
   }
@@ -72,7 +62,7 @@ void Motors::move_steppers(int stats) {
   int gb = 0;
   int ro = 0;
   bool is_speed = false;
-  while(steppers[0].distanceToGo() != 0 || steppers[1].distanceToGo() != 0 || steppers[2].distanceToGo() != 0 || steppers[3].distanceToGo() != 0 || steppers[4].distanceToGo() != 0 || steppers[5].distanceToGo() != 0)
+  while(steppers[0].distanceToGo() != 0 || steppers[1].distanceToGo() != 0 || steppers[2].distanceToGo() != 0)
   {
     /*if(digitalRead(RED_PIN)==0)
     {
@@ -86,7 +76,7 @@ void Motors::move_steppers(int stats) {
         if(steppers[i].distanceToGo()!=0)  steppers[i].enableOutputs();
       }
     }*/
-    for(int i=0; i<6; i++){
+    for(int i=0; i<3; i++){
       steppers[i].run();
     }
   }
@@ -94,7 +84,7 @@ void Motors::move_steppers(int stats) {
 }
 
 void Motors::disable_outputs(){
-  for(int i=0; i<6; i++){
+  for(int i=0; i<3; i++){
     steppers[i].disableOutputs();
   }
   Serial.println("Outputs disabled");
