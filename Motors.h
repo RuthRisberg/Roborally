@@ -9,7 +9,7 @@
 class Motors{
   
   public:
-    Motors(uint16_t *pin); // [6][4] containing [motors R,O,RO,G,B,GB][pins]
+    Motors();
     void init();
     void move_steppers(int stats);
     void disable_outputs();

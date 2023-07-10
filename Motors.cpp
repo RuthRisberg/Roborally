@@ -23,14 +23,7 @@
 #define MOVE_NORMAL_SPEED 2000
 
 
-Motors::Motors(uint16_t *pin){
-  for(int a=0; a<6; a++){
-    for(int b=0; b<4; b++){
-      pins[a][b] = *(pin + 4*a + b);
-    }
-  }
-  TMC2130Stepper drivers[6] = {driver(0), driver(1), driver(2), driver(3), driver(4), driver(5)};
-  AccelStepper steppers[6]  = {stepper(0), stepper(1), stepper(2), stepper(3), stepper(4), stepper(5)};
+Motors::Motors(){
 }
 
 TMC2130Stepper Motors::driver(int number){
