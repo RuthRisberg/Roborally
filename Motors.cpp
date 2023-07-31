@@ -87,7 +87,7 @@ void Motors::disable_outputs(){
   Serial.println("Outputs disabled");
 }
 
-bool Motors::home(){                   //dir=0 -> home out, dir=1 -> home in
+bool Motors::home(){
   // setup
   for (int i=0; i<2; i++) {
     steppers[i].enableOutputs();
