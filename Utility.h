@@ -1,6 +1,7 @@
 #ifndef RoboRallyUtility_h
 #define RoboRallyUtility_h
 
+
 class Action {
   public:
     enum actiontype {
@@ -15,9 +16,9 @@ class Action {
       upgrade   // -
     };
     Action();
-    Action(actiontype at){type=at;};
-    Action(actiontype at, int v1){type=at; property1=v1;};
-    Action(actiontype at, int v1, int v2){type=at; property1=v1; property2=v2;};
+    Action(actiontype at);
+    Action(actiontype at, int v1);
+    Action(actiontype at, int v1, int v2);
     actiontype type;
     int property1=-1;
     int property2=-1;
@@ -33,6 +34,7 @@ class Move {
     enum moveOutcomeType {
       death,
       fail,   // other is -1 for wall, index of robot hit otherwise
+      push,   // other is index of robot to push (need to implement pushing robots)
       success
     };
     struct moveOutcome {
@@ -65,17 +67,17 @@ class TileType {
 class Card {
   public:
     Card();
-    Card(Action a, int n) {action = a; number = n;}
-    Action action;
+    Card(Action a, int n);
+    Action action = Action();
     int number;
 };
 
 class Robot {
   public:
     Robot();
-    Robot(int _id){id=_id;}
+    Robot(int _id);
     Card cards[5];
-    int id;
+    int id=-1;
     int x=0;
     int y=0;
     int facing=0;
@@ -84,8 +86,10 @@ class Robot {
     int respawnx=0;
     int respawny=0;
     int currentflag=0;
+    bool poweredDown=false;
     
 };
+
 
 
 #endif

@@ -4,12 +4,6 @@
 #include <TMC2130Stepper_REGDEFS.h>
 #include <AccelStepper.h>
 
-
-#define RED_PIN 10
-#define GREEN_PIN 11
-#define BLUE_PIN 12
-#define YELLOW_PIN 13
-
 #define MOVE_HOME_SPEED 1200
 #define MOVE_NORMAL_SPEED 2000
 
@@ -25,7 +19,7 @@ AccelStepper Motors::stepper(uint16_t* motorpins){
 }
 
 void Motors::init(){
-  for(int i=0; i<3; i++){
+  for(int i=0; i<4; i++){
     pinMode(pins[i][0], OUTPUT);
     digitalWrite(pins[i][0], HIGH);
     drivers[i].begin();             // Initiate pins and registeries
@@ -51,29 +45,28 @@ void Motors::init(){
 
   pinMode(xbutton, INPUT_PULLUP);
   pinMode(ybutton, INPUT_PULLUP);
+  pinMode(stopbutton, INPUT_PULLUP);
   Serial.println("Buttons initialized");
 }
 
 void Motors::move_steppers() {
   Serial.println("Steppers moving");
-  int gb = 0;
-  int ro = 0;
-  bool is_speed = false;
-  while(steppers[0].distanceToGo() != 0 || steppers[1].distanceToGo() != 0 || steppers[2].distanceToGo() != 0)
+
+  while(steppers[0].distanceToGo() != 0 || steppers[1].distanceToGo() != 0 || steppers[2].distanceToGo() != 0 || steppers[3].distanceToGo() != 0)
   {
-    /*if(digitalRead(RED_PIN)==0)
+    if(digitalRead(stopbutton)==0)
     {
       disable_outputs();
       Serial.println("STOP BUTTON PRESSED");
-      while(digitalRead(RED_PIN)==0);
+      while(digitalRead(stopbutton)==0);
       delay(500);
-      while(digitalRead(RED_PIN)==1);
-      while(digitalRead(RED_PIN)==0);
-      for(int i=0; i<6; i++){
+      while(digitalRead(stopbutton)==1);
+      delay(500);
+      for(int i=0; i<4; i++){
         if(steppers[i].distanceToGo()!=0)  steppers[i].enableOutputs();
       }
-    }*/
-    for(int i=0; i<3; i++){
+    }
+    for(int i=0; i<4; i++){
       steppers[i].run();
     }
   }
@@ -81,12 +74,13 @@ void Motors::move_steppers() {
 }
 
 void Motors::disable_outputs(){
-  for(int i=0; i<3; i++){
+  for(int i=0; i<4; i++){
     steppers[i].disableOutputs();
   }
   Serial.println("Outputs disabled");
 }
 
+// home the CoreXY
 bool Motors::home(){
   // setup
   for (int i=0; i<2; i++) {
@@ -135,22 +129,35 @@ bool Motors::home(){
   steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
   steppers[0].setCurrentPosition((long)0);
   steppers[1].setCurrentPosition((long)0);
+  steppers[2].setCurrentPosition((long)0);
+  steppers[3].setCurrentPosition((long)0);
   disable_outputs();
 
   Serial.println("Motors homed");
   return (true);
 }
 
-void Motors::move(float d1, float d2){
-  float distance[2] = {d1,d2};
+void Motors::moveTo(float x, float y, float up, float angle){
   
-  for(int i=0; i<2; i++){
-    steppers[i].enableOutputs();
-    steppers[i].move((float)1600 * distance[i]);
-  }
+  steppers[0].enableOutputs();
+  steppers[1].enableOutputs();
+  steppers[0].moveTo(x+y);
+  steppers[1].moveTo(x-y);
+
+  steppers[2].enableOutputs();
+  steppers[2].moveTo(up);
+
+  steppers[3].enableOutputs();
+  steppers[3].moveTo(angle);
+
+  // for (int i = 0; i < 4; i++) Serial.print(steppers[i].distanceToGo());
+  // Serial.println();
   
   move_steppers();
 
-  for(int i=0; i<2; i++) if(distance[i] != 0) steppers[i].disableOutputs();
+  // for (int i = 0; i < 4; i++) Serial.print(steppers[i].distanceToGo());
+  // Serial.println();
+
+  for(int i=0; i<4; i++) steppers[i].disableOutputs();
 }
 
