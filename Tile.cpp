@@ -35,7 +35,8 @@ void Tile::addtm(TileType::tilemodifier modifier) {
       break;
 
     case TileType::laser:
-      laser = modifier.modifier;
+      nlasers++;
+      laserdir = modifier.modifier;
       break;
 
     case TileType::wrench:
@@ -93,12 +94,6 @@ Action Tile::getAction(int phase, int turn) {
     case 8: // gears
       if (gear != 0) {
         Action a = {Action::rotation, gear};
-        return (a);
-      }
-      break;
-    case 9: // lasers
-      if (laser != 0) {
-        Action a = {Action::damage, laser};
         return (a);
       }
       break;

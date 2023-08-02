@@ -21,6 +21,9 @@ class Tile {
     Action getAction(int phase, int turn);
     
     Move::moveOutcome moveToHere(int direction);
+    
+    int nlasers = 0; //number of lasers
+    int laserdir = 0;
   
   private:
     bool conveyor[4] = {false, false, false, false};
@@ -29,7 +32,6 @@ class Tile {
     bool wall[4] = {false, false, false, false};
     bool hole = false;
     bool nearhole[4] = {false, false, false, false};
-    int laser = 0; //number of lasers
     bool wrench = false;
     bool wrenchAndHammer = false;
     bool pusher[4][5] = {{false,false,false,false,false},

@@ -41,6 +41,7 @@ class Game{
     void readpowerdown();
     void respawn(int iPlayer);
     void moveTo(int x, int y, bool up, int angle); // board tile, up/down and angle as 0-3
+    void zaplaser(int x, int y, int dir, int power); // recursive
 
   
   private:

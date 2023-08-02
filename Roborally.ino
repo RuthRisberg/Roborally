@@ -1,12 +1,13 @@
 /*
 todo:
-robots shooting lasers
+change die() to being called at the end of each phase
+how quickly are dead robots removed? - currently they stay the full laser-phase, including shooting their own lasers
 respawning
 asking for power down
 getting removed when dead
 conveyor entries
 check how many steps to move for x, y, up/down and spin
-double check rotation, pushers, conveyors
+test rotation, pushers, conveyors, lasers
 */
 
 #include "Game.h"
