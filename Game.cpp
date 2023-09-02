@@ -311,7 +311,7 @@ Move::moveOutcome Game::robotAction(Action action, int iPlayer)
     case (Action::damage):
     {
       robots[iPlayer].damage += action.property1;
-      if (robots[iPlayer].damage > 9) return {Move::death, 0};
+      if (robots[iPlayer].damage >= 10) return {Move::death, 0};
       else
       {
         return {Move::success, 0};
@@ -520,10 +520,6 @@ void Game::zaplaser(int x, int y, int dir, int power)
     if (robots[i].x == x && robots[i].y == y)
     {
       robots[i].damage += power;
-      if (robots[i].damage >= 10)
-      {
-        die(i);
-      }
       return;
     }
   }

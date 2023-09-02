@@ -10,9 +10,11 @@ check how many steps to move for x, y, up/down and spin
 test rotation, pushers, conveyors, lasers
 */
 
-#include "Game.h"
+//#include "Game.h"
+#include "Motors.h"
 
-Game game;
+//Game game;
+Motors motors;
 
 void setup() {
   // put your setup code here, to run once:
@@ -20,15 +22,20 @@ void setup() {
   while(!Serial);
   Serial.println("Hello world!");
 
-  game.init();
-  game.runGame();
+  motors.init();
+  motors.home();
+  //game.runGame();
 
   Serial.println("Setup done");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(500);
+  delay(2000);
+  motors.moveTo(0, 0, 1000, 0);
+  motors.moveTo(0, 0, 0, 0);
+  motors.moveTo(0, 0, 0, 800);
+  motors.moveTo(0, 0, 0, 0);
   // while (Serial.available() == 0);
   // String str = Serial.readStringUntil('\n');
   // Serial.println(str);
