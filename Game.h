@@ -1,10 +1,14 @@
-#include "RingBuffer.h"
 #ifndef Game_h
 #define Game_h
 
-#include "Tile.h"
+//#include "RingBuffer.h"
 #include "Utility.h"
-#include "Motors.h"
+#include "Board.h"
+#include "Controls.h"
+#include "Player.h"
+#include "PlayerAction.h"
+#include "Input.h"
+
 
 /**
 Phases:
@@ -27,37 +31,20 @@ Phases:
 16 respawn (powered down?)
 */
 
-class Game{
+class Game {
   public:
     Game();
     void init();
-    void setBoard(int board, int place);
     void setNumberOfPlayers(int players);
     void runGame();
-    Move::moveOutcome robotAction(Action action, int iPlayer);
-    void die(int iPlayer);
-    void undo(int iPlayer, Action action);
-    void readcards();
-    void readpowerdown();
-    void respawn(int iPlayer);
-    void moveTo(int x, int y, bool up, int angle); // board tile, up/down and angle as 0-3
-    void zaplaser(int x, int y, int dir, int power); // recursive
 
-  
   private:
-    Tile board[26][26];
-    Robot robots[8];
-    Motors motors;
+    Controls controls;
+    Player players[8];
+    Board board;
+    Input input;
     int nPlayers;
-    float xpos(int x);
-    float xref[4] = {0,0,0,0};
-    float ypos(int y);
-    float yref[4] = {0,0,0,0};
-    float uppos = 0;
-    float downpos = 0;
-    float anglemult = 100;
-    int revivelist[8];
+    void playCards(int reg);
 };
-
 
 #endif

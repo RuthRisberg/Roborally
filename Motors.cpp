@@ -49,6 +49,7 @@ void Motors::init(){
   Serial.println("Buttons initialized");
 }
 
+// execute the movement that has been defined in moveTo
 void Motors::move_steppers() {
   Serial.println("Steppers moving");
 
@@ -81,22 +82,25 @@ void Motors::disable_outputs(){
 }
 
 // home the CoreXY
+// todo: implement homing of the two other motors
 bool Motors::home(){
   // setup
   for (int i=0; i<2; i++) {
-    steppers[i].enableOutputs();
-    steppers[i].setMaxSpeed((float)MOVE_HOME_SPEED);
+    steppers[i].enableOutputs(); // turn on motors
+    steppers[i].setMaxSpeed((float)MOVE_HOME_SPEED); // homing speed
   }
 
   Serial.println("homing setup done");
 
   // x
-  steppers[0].move(-30000);
+  steppers[0].move(-30000); // start moving (the motors should be stopped before moving this full distance)
   steppers[1].move(-30000);
   while (digitalRead(xbutton) == 0) {
+    // run() needs to continuously be called to make the motors run
     steppers[0].run();
     steppers[1].run();
 
+    // if the motors move the full distance without hitting the endpoint sensor
     if (steppers[0].distanceToGo() == 0 and steppers[1].distanceToGo() == 0) {
       steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED);
       steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
@@ -107,7 +111,7 @@ bool Motors::home(){
 
   Serial.println("homing x done");
 
-  // y
+  // y (similar to x)
   steppers[0].move(-30000);
   steppers[1].move(30000);
   while (digitalRead(ybutton) == 0) {
@@ -125,13 +129,13 @@ bool Motors::home(){
   Serial.println("homing y done");
 
   // teardown
-  steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED);
+  steppers[0].setMaxSpeed(MOVE_NORMAL_SPEED); // set the speed back to normal
   steppers[1].setMaxSpeed(MOVE_NORMAL_SPEED);
-  steppers[0].setCurrentPosition((long)0);
+  steppers[0].setCurrentPosition((long)0); // mark the current position as position 0
   steppers[1].setCurrentPosition((long)0);
   steppers[2].setCurrentPosition((long)0);
   steppers[3].setCurrentPosition((long)0);
-  disable_outputs();
+  disable_outputs(); // turn off/relax motors
 
   Serial.println("Motors homed");
   return (true);
@@ -150,10 +154,11 @@ void Motors::moveTo(float x, float y, float up, float angle){
   steppers[3].enableOutputs();
   steppers[3].moveTo(angle);
 
+  // debug prints
   // for (int i = 0; i < 4; i++) Serial.print(steppers[i].distanceToGo());
   // Serial.println();
   
-  move_steppers();
+  move_steppers(); // execute the movement
 
   // for (int i = 0; i < 4; i++) Serial.print(steppers[i].distanceToGo());
   // Serial.println();

@@ -1,42 +1,47 @@
 /*
-todo:
-change die() to being called at the end of each phase
-how quickly are dead robots removed? - currently they stay the full laser-phase, including shooting their own lasers
-respawning
-asking for power down
-getting removed when dead
-conveyor entries
-check how many steps to move for x, y, up/down and spin
-test rotation, pushers, conveyors, lasers
+rules (only selected elementss implemented):
+https://www.thealexandrian.net/creations/roborally/roborally-ultimate-collection-rulebook.pdf
+
 */
 
-//#include "Game.h"
-#include "Motors.h"
+#include "Game.h"
 
 //Game game;
-Motors motors;
+Controls controls;
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   while(!Serial);
   Serial.println("Hello world!");
 
+  /* 
+  // Init only the motors object
   motors.init();
   motors.home();
-  //game.runGame();
+  */
+
+  // Init the object that handles a motors object
+  controls.init();
+  controls.home();
 
   Serial.println("Setup done");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  delay(2000);
+  /*
+  // Run only the motors object
   motors.moveTo(0, 0, 1000, 0);
   motors.moveTo(0, 0, 0, 0);
   motors.moveTo(0, 0, 0, 800);
   motors.moveTo(0, 0, 0, 0);
-  // while (Serial.available() == 0);
-  // String str = Serial.readStringUntil('\n');
-  // Serial.println(str);
+  */
+
+  // arguments are x,y,up,angle
+  controls.moveTo(1,1,true,0); // one corner of the field, up
+  controls.moveTo(12,12,false,2); // opposite corner, down, 180 degrees rotated from the other
+
+  // 
+  Serial.println("Press enter to continue...");
+  while (Serial.available() == 0);
+  Serial.readStringUntil('\n');
 }
