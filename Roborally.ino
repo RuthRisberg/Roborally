@@ -9,6 +9,7 @@ https://www.thealexandrian.net/creations/roborally/roborally-ultimate-collection
 //Game game;
 Controls controls;
 
+
 void setup() {
   Serial.begin(115200);
   while(!Serial);
@@ -37,9 +38,24 @@ void loop() {
   */
 
   // arguments are x,y,up,angle
-  controls.moveTo(1,1,true,0); // one corner of the field, up
-  controls.moveTo(12,12,false,2); // opposite corner, down, 180 degrees rotated from the other
-
+  controls.moveTo(1,1,false,0); // one corner of the field, up
+  controls.moveTo(1,1,true,0); // opposite corner, down, 180 degrees rotated from the other
+  controls.moveTo(1,2,true,0);
+  controls.moveTo(1,2,false,0);
+  controls.moveTo(2,1,false,0);
+  controls.moveTo(2,1,true,0);
+  controls.moveTo(2,3,true,0);
+  controls.moveTo(2,3,false,0);
+  controls.moveTo(1,2,false,0);
+  controls.moveTo(1,2,true,0);
+  controls.moveTo(1,4,true,0);
+  controls.moveTo(1,4,false,0);
+  controls.moveTo(2,3,false,0);
+  controls.moveTo(2,3,true,0);
+  controls.moveTo(2,10,true,20);
+  controls.moveTo(10,10,true,0);
+  controls.moveTo(10,10,false,0);
+  
   // 
   Serial.println("Press enter to continue...");
   while (Serial.available() == 0);

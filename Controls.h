@@ -18,12 +18,12 @@ class Controls {
     Motors motors;
 
     // todo: get these values right
-    float xref[2] = {200};
-    float yref[2] = {200};
-    float uppos = 0;
+    float xref[2] = {1100};
+    float yref[2] = {1500};
+    float uppos = -1850;
     float downpos = 0;
     float anglemult = 800;
-    float squaresize = 100;
+    float squaresize = 2025;
 
 
     float xpos(int x);

@@ -5,7 +5,7 @@
 #include <AccelStepper.h>
 
 #define MOVE_HOME_SPEED 1200
-#define MOVE_NORMAL_SPEED 2000
+#define MOVE_NORMAL_SPEED 4000
 
 
 Motors::Motors(){
@@ -39,7 +39,7 @@ void Motors::init(){
     steppers[i].setEnablePin(pins[i][0]);
     steppers[i].setPinsInverted(false, false, true);
     steppers[i].setMaxSpeed((float)MOVE_NORMAL_SPEED);
-    steppers[i].setAcceleration((float)8000);
+    steppers[i].setAcceleration((float)4000);
   }
   Serial.println("Motors initialized");
 
