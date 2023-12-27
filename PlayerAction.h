@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "Action.h"
+#include "Board.h"
 #include "Utility.h"
 
 class PlayerAction
@@ -10,7 +11,7 @@ class PlayerAction
   public:
 
     PlayerAction();
-    PlayerAction(Action action, Player *player, Controls *controls);
+    PlayerAction(Action *action, Player *player, Controls *controls, Board *board);
 
     bool execute(); // returns false when a move is blocked (for dead robots, use isDead())
     int xDiff();
@@ -19,8 +20,9 @@ class PlayerAction
   private:
     Controls *controls;
     Player* players[8];
+    Board* board; // used to clean dead robots when needed
 
-    Action action;
+    Action *action; // responsible to delete
     Player *player;
 
     bool nothingAction = false;

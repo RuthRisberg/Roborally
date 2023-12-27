@@ -6,17 +6,19 @@
 class Robot {
   public:
     Robot();
+    Robot(Robot&& other);
+    Robot& operator=(Robot&& other);
     void setSpawn();
-    int facing=0;
-    int x=0;
-    int y=0;
-    int lives=3;
-    int damage=0;
-    int respawnx=0;
-    int respawny=0;
-    int currentflag=0;
-    bool poweredDown=false;
-    bool dead = false;
+    int facing;
+    int x;
+    int y;
+    int lives;
+    int damage;
+    int respawnx;
+    int respawny;
+    int currentflag;
+    bool poweredDown;
+    bool dead;
 
   private:
 };

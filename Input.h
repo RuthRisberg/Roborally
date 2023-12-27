@@ -9,12 +9,12 @@ class Input
 {
   public:
     Input() {nPlayers = 0;}
-    Input(int nPlayers, Player *players);
+    Input(int nPlayers, Player **players);
     void readCards();
     void readPowerDown(int phase);
 
   private:
-    Player *players;
+    Player **players;
     int nPlayers;
 };
 

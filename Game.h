@@ -34,17 +34,20 @@ Phases:
 class Game {
   public:
     Game();
+    ~Game();
     void init();
     void setNumberOfPlayers(int players);
     void runGame();
 
-  private:
     Controls controls;
-    Player players[8];
-    Board board;
+    Player* players[8]; //owner
+    Board* board;
     Input input;
     int nPlayers;
     void playCards(int reg);
+    Tile defaultTile;
+
+  private:
 };
 
 #endif

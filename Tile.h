@@ -21,33 +21,37 @@ class Tile {
     Tile(TM t1, TM t2, TM t3, TM t4, TM t5, TM t6, TM t7);
     Tile(TM t1, TM t2, TM t3, TM t4, TM t5, TM t6, TM t7, TM t8);
 
-    Action getAction(int phase, int turn);
-    move::moveOutcome moveToHere(int headingDirection);
-    move::moveOutcome moveAway(int direction);
-    Tile* getNeighbor(int dir);
+    Action* getAction(int8_t phase, int8_t turn); // remember to deallocate!
+    move::moveOutcome moveAway(int8_t direction);
+    Tile* getNeighbor(int8_t dir);
     void zapLasers();
     void removeDeadRobot();
     void reviveRobotHere(Robot *robot);
 
-    void setPosition(int x, int y);
+    void setPosition(int8_t x, int8_t y);
     void setDeathTile(Tile *deathTile);
 
     void addNeighbors(Tile *n0, Tile *n1, Tile *n2, Tile *n3);
 
     void printProperties(); //debug
+
+    void setRobot(Robot *robot);
+    void removeRobot();
+
+    Robot *robot;
+    bool hasRobot;
+    int8_t x;
+    int8_t y;
+    
+    Controls *controls;
   
   private:
     void init();
-    Controls *controls;
-    Robot *robot;
-    bool hasRobot;
     Tile *n0;
     Tile *n1;
     Tile *n2;
     Tile *n3;
     Tile *deathTile;
-    int x;
-    int y;
     bool conveyor[4];
     bool expressConveyor[4];
     bool conveyorEntry[4]; // only added for curved conveyors
@@ -55,22 +59,24 @@ class Tile {
     bool hole;
     bool wrench;
     bool wrenchAndHammer;
-    bool pusher[4][5]; // direction, turns
-    int gear; //1/0/-1: clockwise/nonthing/counterclockwise
-    int flag;
-    int nlasers; //number of lasers
-    int laserdir;
+    //bool pusher[4][5]; // direction, turns
+    int8_t gear; //1/0/-1: clockwise/nonthing/counterclockwise
+    int8_t flag;
+    int8_t nlasers; //number of lasers
+    int8_t laserdir;
     bool edge;
 
 
-    int dfsvar;
+    int8_t dfsvar;
 
     void addtm(tilemodifier modifier);
 
-    void runLaser(int dir);
+    void runLaser(int8_t dir);
 
-    void updatePathToDeath(int distance); // part of the bfs
-    bool pullRobot(bool towardsDeath, int lastDfsVar, Robot *robot);
+    move::moveOutcome moveToHere(int8_t headingDirection); // should not be called by anyone except moveAway(int)
+
+    void updatePathToDeath(int8_t distance); // part of the bfs
+    bool pullRobot(bool towardsDeath, int8_t lastDfsVar, Robot *robot);
     void resetDfs();
 };
 

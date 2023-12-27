@@ -1,5 +1,11 @@
 #include "Utility.h"
 
+#ifndef cppCompat_h
+int stringToInt(String s)
+{
+    return s.toInt();
+}
+#endif
 
 int utility::dx(int dir)
 {

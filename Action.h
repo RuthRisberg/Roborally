@@ -13,12 +13,12 @@ class Action {
     Action *composite1;
     Action *composite2;
     bool powerMove = true;
-    int moveabs = -1;
-    int moverel = -1;
-    int rotation = 0;
-    int damage = 0;
+    int8_t moveabs = -1;
+    int8_t moverel = -1;
+    int8_t rotation = 0;
+    int8_t damage = 0;
     bool death = false;
-    int flag = -1;
+    int8_t flag = -1;
     bool setspawn = false;
 
   private:
@@ -27,7 +27,7 @@ class Action {
 // should take a positive integer, creates a CompositeAction of RelativeMoveActions
 class MoveForwardAction : public Action {
   public:
-    MoveForwardAction(int steps);
+    MoveForwardAction(int8_t steps);
   
   private:
 };
@@ -41,35 +41,35 @@ class CompositeAction : public Action {
 
 class AbsoluteMoveAction : public Action {
   public:
-    AbsoluteMoveAction(int direction, bool powerMove);
+    AbsoluteMoveAction(int8_t direction, bool powerMove);
 
   private:
 };
 
 class RelativeMoveAction : public Action {
   public:
-    RelativeMoveAction (int direction);
+    RelativeMoveAction (int8_t direction);
 
   private:
 };
 
 class RotateAction : public Action {
   public:
-    RotateAction (int rotation);
+    RotateAction (int8_t rotation);
 
   private:
 };
 
 class DamageAction : public Action {
   public:
-    DamageAction (int damage);
+    DamageAction (int8_t damage);
 
   private:
 };
 
 class FlagAction : public Action {
   public:
-    FlagAction (int flagNumber);
+    FlagAction (int8_t flagNumber);
 
   private:
 };

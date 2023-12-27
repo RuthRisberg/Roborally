@@ -10,11 +10,17 @@
 
 class Player {
   public:
-    Player() {}
-    Player(Robot *robot, Controls *controls);
-    Action getCardAction(int registry);
+    Player(Player&& other);
+    Player& operator=(Player&& other);
+
+    Player();
+    Player(Robot *robot, Controls *controls, Tile *tile);
+
+    ~Player();
+
+    Action* getCardAction(int registry);
     int getCardPriority(int registry);
-    Action getTileAction(int phase, int registry);
+    Action* getTileAction(int phase, int registry);
     void fetchNewCards() {}
 
     //bool tryMoveDir(int absoluteDir, bool withForce); // uses board's orientation, not robot's
@@ -23,7 +29,7 @@ class Player {
     int getY();
     bool isDead();
     void checkDead();
-    void setCard(int index, Card card);
+    void setCard(int index, Card *card);
 
     Tile *tile;
     Robot *robot;
@@ -31,7 +37,7 @@ class Player {
 
   private:
     Controls *controls;
-    Card cards[5];
+    Card* cards[5]; // owner
 };
 
 #endif
