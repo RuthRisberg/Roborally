@@ -8,14 +8,14 @@ https://www.thealexandrian.net/creations/roborally/roborally-ultimate-collection
 
 // Controls controls;
 
-#include <malloc.h>
-#include <stdlib.h>
-#include <stdio.h>
+// #include <malloc.h>
+// #include <stdlib.h>
+// #include <stdio.h>
 
-extern char _end;
-extern "C" char *sbrk(int i);
-char *ramstart=(char *)0x20070000;
-char *ramend=(char *)0x20088000;
+// extern char _end;
+// extern "C" char *sbrk(int i);
+// char *ramstart=(char *)0x20070000;
+// char *ramend=(char *)0x20088000;
 
 void setup() {
   Serial.begin(115200);

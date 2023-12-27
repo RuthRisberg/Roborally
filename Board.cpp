@@ -149,7 +149,7 @@ Board& Board::operator=(Board&& other)
     }
     int nPlayers = 0;
   }
-  board[1][2]->printProperties();
+  // board[1][2]->printProperties();
   return *this;
 }
 
@@ -424,6 +424,6 @@ void Board::setBoard(int chooseboard, int place, bool hasRealHoles) {
       board[x][y]->controls = controls;
     }
   }
-  board[1][2]->printProperties();
-  board[2][2]->printProperties();
+  // board[1][2]->printProperties();
+  // board[2][2]->printProperties();
 }

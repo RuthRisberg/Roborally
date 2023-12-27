@@ -85,19 +85,19 @@ void Game::runGame() {
     // phases 3-11
     for (int reg = 0; reg < 5; reg++)
     {
-      for (int i = 0; i < nPlayers; i++)
-      {
-        Serial.print("Player ");
-        Serial.print(i);
-        Serial.print(" at ");
-        Serial.print(players[i]->robot->x);
-        Serial.print(",");
-        Serial.print(players[i]->robot->y);
-        Serial.print(",");
-        Serial.println(players[i]->robot->facing);
-      }
-      Serial.println("Press enter to continue");
-      Serial.readStringUntil('\n');
+      // for (int i = 0; i < nPlayers; i++)
+      // {
+      //   Serial.print("Player ");
+      //   Serial.print(i);
+      //   Serial.print(" at ");
+      //   Serial.print(players[i]->robot->x);
+      //   Serial.print(",");
+      //   Serial.print(players[i]->robot->y);
+      //   Serial.print(",");
+      //   Serial.println(players[i]->robot->facing);
+      // }
+      // Serial.println("Press enter to continue");
+      // Serial.readStringUntil('\n'); // doesn't work on arduino
       // phase 3
 
 
@@ -107,7 +107,7 @@ void Game::runGame() {
       // phase 5-11
       for (int phase = 5; phase <= 11; phase++)
       {
-        Serial.println("Phase " + String(phase));
+        // Serial.println("Phase " + String(phase));
         if (phase == 9) // lasers
         {
           board->zapLasers();
@@ -196,7 +196,7 @@ void Game::playCards(int reg)
     //players[i].tile->printProperties();
     Player *player = players[iplayers[i]];
     if (player->isDead()) continue;
-    Serial.println("Play card turn " + String(reg) + " robot " + String(iplayers[i]));
+    // Serial.println("Play card turn " + String(reg) + " robot " + String(iplayers[i]));
     Action* action = player->getCardAction(reg);
     PlayerAction playerAction = PlayerAction(action, player, &controls, board);
     playerAction.execute();

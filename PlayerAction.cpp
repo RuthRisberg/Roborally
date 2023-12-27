@@ -16,17 +16,17 @@ PlayerAction::PlayerAction(Action *action, Player *player, Controls *controls, B
 
 bool PlayerAction::execute()
 {
-    Serial.println("Executing action...");
-    Serial.println(nothingAction);
+    // Serial.println("Executing action...");
+    // Serial.println(nothingAction);
     bool retval = true;
     if (player->isDead())
     {
-        Serial.println("dead");
+        // Serial.println("dead");
         retval = true;
     }
     else if (action->isComposite)
     {
-        Serial.println("Composite action");
+        // Serial.println("Composite action");
         PlayerAction a1 = PlayerAction(action->composite1, player, controls, board);
         PlayerAction a2 = PlayerAction(action->composite2, player, controls, board);
 
@@ -38,25 +38,25 @@ bool PlayerAction::execute()
     }
     else if (action->moveabs != -1)
     {
-        Serial.print("Move absolute: ");
+        // Serial.print("Move absolute: ");
         Serial.println(action->moveabs);
         retval = moveAbs(action->moveabs, action->powerMove);
     }
     else if (action->moverel != -1)
     {
-        Serial.print("Move relative: ");
+        // Serial.print("Move relative: ");
         Serial.println(action->moverel);
         int direction = (player->robot->facing + action->moverel) % 4;
         retval = moveAbs(direction, action->powerMove);
     }
     else if (action->rotation != 0)
     {
-        Serial.println("rotate");
+        // Serial.println("rotate");
         controls->moveRobot(player->robot, 0, 0, action->rotation);
     }
     else // no need to separate these
     {
-        Serial.println("other");
+        // Serial.println("other");
         player->robot->damage += action->damage;
         player->checkDead();
 
@@ -127,7 +127,7 @@ int PlayerAction::yDiff()
 
 bool PlayerAction::moveAbs(int dir, bool powermove)
 {
-    bool print = true;
+    bool print = false;
     move::moveOutcome outcome = player->tile->moveAway(dir);
     if(print) Serial.print("outcome is: ");
     switch (outcome)
