@@ -38,7 +38,9 @@ class Game {
     void init();
     void setNumberOfPlayers(int players);
     void runGame();
+    void setStartPosition(int player, int x, int y, int facing);
 
+  private:
     Controls controls;
     Player* players[8]; //owner
     Board* board;
@@ -47,7 +49,6 @@ class Game {
     void playCards(int reg);
     Tile defaultTile;
 
-  private:
 };
 
 #endif

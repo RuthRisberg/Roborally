@@ -27,7 +27,7 @@ void Input::readCards()
                 
                 case 'f':
                    {int number;
-                    if (inp.substring(1,1) == "o")
+                    if (inp.substring(1,2) == "o")
                     {
                         number = stringToInt(inp.substring(7, 8));
                     }
@@ -56,6 +56,8 @@ void Input::readCards()
                 
                 default:
                     {Serial.println("Invalid card. Try again.");
+                    Serial.println("Received: ");
+                    Serial.println(inp);
                     Serial.println("Format for cards is '<back/forwardX/left/right/uturn> <priority (3 digits)>', ex: 'forward2 270' or 'uturn 070'");
                     j--;
                     continue;}

@@ -240,11 +240,15 @@ void Tile::removeDeadRobot()
   resetDfs();
 }
 
-void Tile::reviveRobotHere(Robot *robot)
+void Tile::reviveRobotHere(Robot *robot, Tile* fromTile)
 {
   dfsvar = 0;
   updatePathToDeath(0);
-  deathTile->pullRobot(false, -1, robot);
+  Serial.print("Robot respawn: ");
+  Serial.print(x);
+  Serial.print(", ");
+  Serial.println(y);
+  fromTile->pullRobot(false, -1, robot);
   resetDfs();
 }
 
@@ -326,7 +330,14 @@ bool Tile::pullRobot(bool towardsDeath, int8_t lastDfsVar, Robot *robot)
 
     if (!towardsDeath && hasRobot) return true; // don't go all the way back if the rest is blocked. stop at what most likely is the square next to the respawn point
 
-    if (!towardsDeath) controls->moveRobotTo(robot, x, y, -1);
+    if (!towardsDeath) 
+    {
+      Serial.print("move to ");
+      Serial.print(x);
+      Serial.print(", ");
+      Serial.println(y);
+      controls->moveRobotTo(robot, x, y, -1);
+    }
 
     for (int8_t i = 0; i < 4; i++)
     {

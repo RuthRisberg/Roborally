@@ -28,14 +28,26 @@ void Game::init()
 }
 
 
-void Game::setNumberOfPlayers(int numberOfPlayers) {
+void Game::setNumberOfPlayers(int numberOfPlayers) 
+{
   nPlayers = numberOfPlayers;
   for (int i=0; i<min(numberOfPlayers, 4); i++) {
     players[i] = new Player(board->getFreeRobot(players[i]), &controls, &defaultTile);
   }
 }
 
-void Game::runGame() {
+void Game::setStartPosition(int player, int x, int y, int facing)
+{
+  players[player]->robot->x = x;
+  players[player]->robot->respawnx = x;
+  players[player]->robot->y = y;
+  players[player]->robot->respawny = y;
+  players[player]->robot->facing = facing;
+  board->updatePlayerTile(players[player]);
+}
+
+void Game::runGame() 
+{
   /**
   Phases:
   0 (deal cards)
@@ -58,14 +70,8 @@ void Game::runGame() {
   */
 
   // setup:
-  board->setBoard(0, 0, false);
+  board->setBoard(0, 0, true);
   input = Input(nPlayers, players);
-  for (int i = 0; i < nPlayers; i++)
-  {
-    players[i]->robot->x = 1;
-    players[i]->robot->y = 1;
-    board->updatePlayerTile(players[i]);
-  }
   controls.init();
   controls.home();
 

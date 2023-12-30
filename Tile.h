@@ -26,7 +26,7 @@ class Tile {
     Tile* getNeighbor(int8_t dir);
     void zapLasers();
     void removeDeadRobot();
-    void reviveRobotHere(Robot *robot);
+    void reviveRobotHere(Robot *robot, Tile* fromTile);
 
     void setPosition(int8_t x, int8_t y);
     void setDeathTile(Tile *deathTile);

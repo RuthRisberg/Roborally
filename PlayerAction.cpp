@@ -39,13 +39,13 @@ bool PlayerAction::execute()
     else if (action->moveabs != -1)
     {
         // Serial.print("Move absolute: ");
-        Serial.println(action->moveabs);
+        // Serial.println(action->moveabs);
         retval = moveAbs(action->moveabs, action->powerMove);
     }
     else if (action->moverel != -1)
     {
         // Serial.print("Move relative: ");
-        Serial.println(action->moverel);
+        // Serial.println(action->moverel);
         int direction = (player->robot->facing + action->moverel) % 4;
         retval = moveAbs(direction, action->powerMove);
     }

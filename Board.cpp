@@ -247,7 +247,9 @@ void Board::cleanDeadRobot(Player* player)
   {
     if (!deathRow[i]->hasRobot)
     {
-      controls->moveRobotTo(player->robot, deathRow[i]->x, deathRow[i]->y, 0);
+      //controls->moveRobotTo(player->robot, deathRow[i]->x, deathRow[i]->y, 0);
+      controls->moveTo(deathRow[i]->x, deathRow[i]->y, true, 0);
+      controls->moveTo(deathRow[i]->x, deathRow[i]->y, false, 0);
       deathRow[i]->hasRobot = true;
       deathRow[i]->robot = player->robot;
       break;
@@ -265,7 +267,7 @@ void Board::updatePlayerTile(Player *player)
 
 void Board::respawn(Robot *robot)
 {
-  board[robot->respawnx][robot->respawny]->reviveRobotHere(robot);
+  board[robot->respawnx][robot->respawny]->reviveRobotHere(robot, board[robot->x][robot->y]);
 }
 
 void Board::reviveRobots()
@@ -274,8 +276,14 @@ void Board::reviveRobots()
   {
     if (deathRow[i]->hasRobot)
     {
+      deathRow[i]->removeRobot();
       respawn(deathRow[i]->robot);
     }
+  }
+
+  for (int i = 0; i < nPlayers; i++)
+  {
+    updatePlayerTile(players[i]);
   }
 }
 
@@ -323,49 +331,91 @@ void Board::setBoard(int chooseboard, int place, bool hasRealHoles) {
   //   Tile(), Tile(), Tile(), Tile(), Tile(), Tile()}
   // };
 
-  Tile chopshop[12][12] = {
-    {Tile({wr, 0}), Tile(), Tile({wa, 0}), Tile({ex, 0}), Tile({wa, 0}), Tile({ex, 2}),
-    Tile({co, 0}), Tile({wa, 0}), Tile({co, 2}), Tile({wa, 0}), Tile(), Tile()},
+  // Tile chopshop[12][12] = {
+  //   {Tile({wr, 0}), Tile(), Tile({wa, 0}), Tile({ex, 0}), Tile({wa, 0}), Tile({ex, 2}),
+  //   Tile({co, 0}), Tile({wa, 0}), Tile({co, 2}), Tile({wa, 0}), Tile(), Tile()},
 
-    {Tile(), Tile({hl, 0}), Tile({wa, 1}, {wa, 2}), Tile({wa, 3}, {ex, 0}), Tile(),
-    Tile({wa, 1}, {ex, 2}, {lz, 3}), Tile({wa, 3}, {co, 0}), Tile(), Tile({co, 2}),
-    Tile({co, 2}, {ce, 1}), Tile({co, 3}), Tile({co, 3})},
+  //   {Tile(), Tile({hl, 0}), Tile({wa, 1}, {wa, 2}), Tile({wa, 3}, {ex, 0}), Tile(),
+  //   Tile({wa, 1}, {ex, 2}, {lz, 3}), Tile({wa, 3}, {co, 0}), Tile(), Tile({co, 2}),
+  //   Tile({co, 2}, {ce, 1}), Tile({co, 3}), Tile({co, 3})},
 
-    {Tile({wa, 3}), Tile(), Tile({wa, 0}), Tile({ex, 0}, {ce, 1}), Tile({ex, 3}),
-    Tile({ex, 3}, {ce, 0}), Tile({co, 0}), Tile(), Tile({co, 2}), Tile({co, 2}), Tile(), Tile({wa, 1})},
-
-
-    {Tile(), Tile(), Tile(), Tile({ex, 0}), Tile({wa, 1}), Tile({wa, 2}, {wa, 3}), 
-    Tile({co, 0}), Tile(), Tile({wa, 2}), Tile({hl, 0}), Tile(), Tile()},
-
-    {Tile({wa, 3}), Tile(), Tile(), Tile({ex, 0}), Tile(), Tile({co, 1}, {wa, 0}),
-    Tile({ge, -1}), Tile(), Tile({wa, 0}), Tile({wh, 0}), Tile(), Tile({wa, 1})},
-
-    {Tile({co, 3}), Tile({co, 3}), Tile({ge, 1}), Tile({ex, 0}), Tile(), 
-    Tile({wh, 0}, {wa, 1}), Tile({co, 2}, {ce, 1}, {wa, 3}), Tile({co, 3}),
-    Tile({ge, 1}), Tile({co, 3}), Tile({co, 3}), Tile({co, 3})},
+  //   {Tile({wa, 3}), Tile(), Tile({wa, 0}), Tile({ex, 0}, {ce, 1}), Tile({ex, 3}),
+  //   Tile({ex, 3}, {ce, 0}), Tile({co, 0}), Tile(), Tile({co, 2}), Tile({co, 2}), Tile(), Tile({wa, 1})},
 
 
-    {Tile({co, 1}), Tile({co, 2}, {ce, 3}), Tile({ge, -1}), Tile({ex, 0}), Tile(), Tile(),
-    Tile({co, 2}), Tile({hl, 0}), Tile({wa, 2}, {lz, 0}), Tile(), Tile({wa, 2}), Tile()},
+  //   {Tile(), Tile(), Tile(), Tile({ex, 0}), Tile({wa, 1}), Tile({wa, 2}, {wa, 3}), 
+  //   Tile({co, 0}), Tile(), Tile({wa, 2}), Tile({hl, 0}), Tile(), Tile()},
 
-    {Tile({wa, 3}), Tile({co, 2}), Tile({wa, 2}, {lz, 0}), Tile({ex, 0}), Tile(), Tile(),
-    Tile({co, 2}), Tile(), Tile({wa, 0}), Tile(), Tile({wa, 0}), Tile({wa, 1})},
+  //   {Tile({wa, 3}), Tile(), Tile(), Tile({ex, 0}), Tile(), Tile({co, 1}, {wa, 0}),
+  //   Tile({ge, -1}), Tile(), Tile({wa, 0}), Tile({wh, 0}), Tile(), Tile({wa, 1})},
 
-    {Tile(), Tile({co, 2}), Tile({wa, 0}, {wa, 1}), Tile({wa, 3}, {lz, 2}), Tile({ge, 1}, {lz, 2}),
-    Tile({ge, -1}, {lz, 2}), Tile({wa, 1}, {lz, 3}, {lz, 3}), Tile({wa, 3}), Tile({ge, -1}),
-    Tile({co, 3}), Tile({co, 3}), Tile({co, 3})},
+  //   {Tile({co, 3}), Tile({co, 3}), Tile({ge, 1}), Tile({ex, 0}), Tile(), 
+  //   Tile({wh, 0}, {wa, 1}), Tile({co, 2}, {ce, 1}, {wa, 3}), Tile({co, 3}),
+  //   Tile({ge, 1}), Tile({co, 3}), Tile({co, 3}), Tile({co, 3})},
 
 
-    {Tile({wa, 3}), Tile({co, 2}), Tile({wh, 0}), Tile({co, 0}), Tile(), Tile({hl}),
-    Tile(), Tile(), Tile({co, 2}), Tile({hl, 0}), Tile(), Tile({wa, 1})},
+  //   {Tile({co, 1}), Tile({co, 2}, {ce, 3}), Tile({ge, -1}), Tile({ex, 0}), Tile(), Tile(),
+  //   Tile({co, 2}), Tile({hl, 0}), Tile({wa, 2}, {lz, 0}), Tile(), Tile({wa, 2}), Tile()},
 
-    {Tile({wa, 1}), Tile({wa, 1}, {wa, 3}, {lz, 3}, {lz, 3}, {lz, 3}), Tile({wa, 3}), Tile({co, 0}), Tile(), Tile(),
-    Tile({wa, 1}), Tile({wa, 3}, {lz, 1}), Tile({co, 2}, {lz, 1}), Tile({wa, 1}, {lz, 1}),
-    Tile({wa, 3}), Tile()},
+  //   {Tile({wa, 3}), Tile({co, 2}), Tile({wa, 2}, {lz, 0}), Tile({ex, 0}), Tile(), Tile(),
+  //   Tile({co, 2}), Tile(), Tile({wa, 0}), Tile(), Tile({wa, 0}), Tile({wa, 1})},
 
-    {Tile(), Tile({co, 2}), Tile({wa, 2}), Tile({co, 0}), Tile({wa, 2}), Tile(),
-    Tile(), Tile({wa, 2}), Tile({co, 2}), Tile({wa, 2}), Tile(), Tile({wr, 0})}
+  //   {Tile(), Tile({co, 2}), Tile({wa, 0}, {wa, 1}), Tile({wa, 3}, {lz, 2}), Tile({ge, 1}, {lz, 2}),
+  //   Tile({ge, -1}, {lz, 2}), Tile({wa, 1}, {lz, 3}, {lz, 3}), Tile({wa, 3}), Tile({ge, -1}),
+  //   Tile({co, 3}), Tile({co, 3}), Tile({co, 3})},
+
+
+  //   {Tile({wa, 3}), Tile({co, 2}), Tile({wh, 0}), Tile({co, 0}), Tile(), Tile({hl}),
+  //   Tile(), Tile(), Tile({co, 2}), Tile({hl, 0}), Tile(), Tile({wa, 1})},
+
+  //   {Tile({wa, 1}), Tile({wa, 1}, {wa, 3}, {lz, 3}, {lz, 3}, {lz, 3}), Tile({wa, 3}), Tile({co, 0}), Tile(), Tile(),
+  //   Tile({wa, 1}), Tile({wa, 3}, {lz, 1}), Tile({co, 2}, {lz, 1}), Tile({wa, 1}, {lz, 1}),
+  //   Tile({wa, 3}), Tile()},
+
+  //   {Tile(), Tile({co, 2}), Tile({wa, 2}), Tile({co, 0}), Tile({wa, 2}), Tile(),
+  //   Tile(), Tile({wa, 2}), Tile({co, 2}), Tile({wa, 2}), Tile(), Tile({wr, 0})}
+  // };
+
+  // exchange label at dir1
+  Tile exchange[12][12] = {
+    {Tile({wr}), Tile({co, 2}), Tile({wa, 0}), Tile({co, 0}), Tile({wa, 0}), Tile(),
+    Tile({ex, 0}), Tile({wa, 0}), Tile({co, 2}), Tile({wa, 0}), Tile(), Tile()},
+
+    {Tile({co, 3}), Tile({ge, 1}), Tile(), Tile({co, 0}), Tile(), Tile({co, 2}),
+    Tile({ex, 0}), Tile(), Tile({co, 2}), Tile({wa, 3}), Tile({wa, 0}), Tile({hl})},
+
+    {Tile({wa, 3}), Tile({wa, 2}), Tile(), Tile({co, 0}), Tile(), Tile({co, 2}),
+    Tile({ex, 0}), Tile(), Tile({co, 2}), Tile(), Tile(), Tile({wa, 1})},
+
+
+    {Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile({ge, -1}), Tile(), Tile({co, 2}),
+    Tile({ex, 0}), Tile(), Tile({ge, -1}), Tile({co, 1}), Tile({co, 1}), Tile({co, 1})},
+
+    {Tile({wa, 3}), Tile(), Tile(), Tile(), Tile({wh}, {wa, 1}, {wa, 2}), Tile({co, 2}),
+    Tile({ex, 0}), Tile({wa, 2}, {wa, 3}), Tile(), Tile(), Tile(), Tile({wa, 1})},
+
+    {Tile({ex, 3}), Tile({ex, 3}), Tile({ex, 3}), Tile({ex, 3}), Tile({ex, 3}), Tile(),
+    Tile(), Tile({co, 3}), Tile({co, 3}), Tile({co, 3}), Tile({co, 3}), Tile()},
+
+
+    {Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile(),
+    Tile(), Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile({co, 1}), Tile({co, 1})},
+
+    {Tile({wa, 3}), Tile(), Tile(), Tile(), Tile({wa, 0}, {wa, 1}), Tile({co, 2}),
+    Tile({co, 0}), Tile({wa, 0}, {wa, 3}), Tile(), Tile(), Tile(), Tile({wa, 1})},
+
+    {Tile({ex, 3}), Tile({ex, 3}), Tile({ex, 3}), Tile({co, 0}), Tile(), Tile({co, 2}),
+    Tile({co, 0}), Tile(), Tile({ge, -1}), Tile({co, 3}), Tile({co, 3}), Tile({co, 3})},
+
+
+    {Tile({wa, 3}, {lz, 1}), Tile(), Tile({wa, 1}), Tile({co, 0}), Tile(), Tile({co, 2}),
+    Tile({co, 0}), Tile(), Tile({co, 2}), Tile(), Tile(), Tile({wa, 1})},
+
+    {Tile({co, 1}), Tile({ge, 1}), Tile(), Tile({co, 0}), Tile(), Tile({co, 2}),
+    Tile({co, 0}), Tile(), Tile({co, 2}), Tile({hl}), Tile(), Tile({co, 1})},
+
+    {Tile(), Tile({co, 2}), Tile({wa, 2}), Tile({co, 0}), Tile({wa, 2}), Tile({co, 2}),
+    Tile({co, 0}), Tile({wa, 2}), Tile({co, 2}), Tile({wa, 2}), Tile(), Tile({wr})}
   };
 
   // handle choosing what place the board is in
@@ -398,7 +448,7 @@ void Board::setBoard(int chooseboard, int place, bool hasRealHoles) {
     case 0:
       for (int i=0; i<12; i++) {
         for (int j=0; j<12; j++) {
-          *board[i+minx][j+miny] = Tile(chopshop[i][j]);
+          *board[i+minx][j+miny] = Tile(exchange[i][j]);
         }
       }
       break;

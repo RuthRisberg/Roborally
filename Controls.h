@@ -26,7 +26,7 @@ class Controls {
     Motors motors;
     float squaresize = 2025;
     float xref[2] = {1100, 1100+2025*12};
-    float yref[2] = {1500, 1500+2025*12};
+    float yref[2] = {1500, 1500+2025*12+405};
     float uppos = -1850;
     float downpos = 0;
     float anglemult = 800;

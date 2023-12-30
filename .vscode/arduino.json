@@ -1,5 +1,5 @@
 {
     "board": "arduino:sam:arduino_due_x_dbg",
     "sketch": "Roborally.ino",
-    "port": "/dev/ttyACM0"
+    "port": "/dev/ttyACM1"
 }

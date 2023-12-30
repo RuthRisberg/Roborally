@@ -22,12 +22,13 @@ void setup() {
   while(!Serial);
   Serial.println("Hello world!");
 
-  /* 
+  
   // Init only the motors object
-  motors.init();
-  motors.home();
-  */
-
+  // Motors motors;
+  // motors.init();
+  // motors.home();
+  
+  
   // Init the object that handles a motors object
   // controls.init();
   // controls.home();
@@ -56,7 +57,9 @@ void setup() {
   Serial.println("game constructor done!");
   game.init();
   game.setNumberOfPlayers(1);
-  Serial.println("Run game");
+  game.setStartPosition(0, 1, 1, 1);
+  // game.setStartPosition(1, 3, 1, 1);
+  // Serial.println("Run game");
   game.runGame();
 
   // delay(1000);
@@ -116,9 +119,11 @@ void loop() {
   motors.moveTo(0, 0, 0, 0);
   */
 
+  // Serial.print(digitalRead(10));
+  // Serial.println(digitalRead(11));
   
   // 
-  Serial.println("Press enter to continue...");
-  while (Serial.available() == 0);
-  Serial.readStringUntil('\n');
+  // Serial.println("Press enter to continue...");
+  // while (Serial.available() == 0);
+  // Serial.readStringUntil('\n');
 }
